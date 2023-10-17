@@ -51,7 +51,7 @@ async function checkTasks() {
             console.log("update", updatedComment);
             await octokit.request(`PATCH /repos/${owner}/${thisRepo}/issues/comments/${comment.id}`, {
               owner,
-              repo,
+              thisRepo,
               comment_id: comment.id,
               body: updatedComment,
               });
