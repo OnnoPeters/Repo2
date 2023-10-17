@@ -28,7 +28,7 @@ async function checkTasks() {
 
       for(const comment of response.data)
       {
-          var lines = comment.split('\r\n');
+          var lines = comment.body.split('\r\n');
           var change = false;
           var updatedComment = "";
           var i = 0;
