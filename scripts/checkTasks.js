@@ -7,6 +7,11 @@ async function checkTasks() {
   const thisRepo = process.env.THIS_REPO_NAME;
   const prNumber = process.env.PR_NUMBER;
 
+  console.log("this repo:", thisRepo);
+  console.log("triggering repo:", otherRepo);
+  console.log("prNumber:", prNumber);
+  
+
   try {
     const pr = await octokit.request(`GET /repos/${owner}/${otherRepo}/pulls/${prNumber}`, {
       owner,
