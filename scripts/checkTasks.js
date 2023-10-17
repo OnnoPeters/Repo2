@@ -16,7 +16,7 @@ async function checkTasks() {
 
 
     if (pr.data.state === 'closed' && pr.data.merged) {
-      const updatedComment = `- [x] ${owner}/{otherRepo}#{prNumber}\n`;
+      const updatedComment = `- [x] ${owner}/${otherRepo}#${prNumber}\n`;
 
       const response = await octokit.request(`GET /repos/${owner}/${thisRepo}/issues/comments`, {
         owner: owner,
@@ -26,11 +26,9 @@ async function checkTasks() {
         }
       })
 
-      console.log(response.data);
       for(const comment of response.data)
       {
-          console.log(`${owner}/{otherRepo}#{prNumber}`);
-          if(comment.body.includes(`${owner}/{otherRepo}#{prNumber}`)) {
+          if(comment.body.includes(`${owner}/${otherRepo}#${prNumber}`)) {
             await octokit.request(`PATCH /repos/${owner}/${thisRepo}/issues/comments/${comment.id}`, {
             owner,
             repo,
