@@ -16,7 +16,7 @@ async function checkTasks() {
 
 
     if (pr.data.state === 'closed' && pr.data.merged) {
-      const updatedComment = `- [x] ${owner}/${otherRepo}#${prNumber}\n`;
+      //const updatedComment = `- [x] ${owner}/${otherRepo}#${prNumber}\n`;
 
       const response = await octokit.request(`GET /repos/${owner}/${thisRepo}/issues/comments`, {
         owner: owner,
@@ -28,13 +28,34 @@ async function checkTasks() {
 
       for(const comment of response.data)
       {
-          if(comment.body.includes(`${owner}/${otherRepo}#${prNumber}`)) {
+          var lines = String.prototype.split('\\r\\n');
+          var change = false;
+          var updatedComment = "";
+          var i = 0;
+          for(const line of lines)
+          {
+            if((line.startsWith("- [ ]") 
+            || line.startsWith("-  [ ]")
+            || line.startsWith("-   [ ]")
+            || line.startsWith("-    [ ]"))
+             && line.includes(`${owner}/${otherRepo}#${prNumber}`)) {
+              change = true;
+              updatedComment += line.replace(/-\s{1,4}\[\s\]/g,"- [x]");
+
+            } else {
+              updatedComment += line;
+            }
+            if(i < lines.length - 1) updatedComment += '\r\n';
+          if(change)
+          {
             await octokit.request(`PATCH /repos/${owner}/${thisRepo}/issues/comments/${comment.id}`, {
-            owner,
-            repo,
-            comment_id: comment.id,
-            body: updatedComment,
-            });
+              owner,
+              repo,
+              comment_id: comment.id,
+              body: updatedComment,
+              });
+          }
+          i++;
         }
       }
 
