@@ -46,6 +46,8 @@ async function checkTasks() {
               updatedComment += line;
             }
             if(i < lines.length - 1) updatedComment += '\r\n';
+          i++;
+          }
           if(change)
           {
             console.log("update", updatedComment);
@@ -56,8 +58,6 @@ async function checkTasks() {
               body: updatedComment,
               });
           }
-          i++;
-        }
       }
 
       console.log('Task checked');
