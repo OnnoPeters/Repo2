@@ -29,6 +29,7 @@ async function checkTasks() {
       for(const comment of response.data)
       {
           var lines = String.prototype.split('\\r\\n');
+          console.log("lines", lines);
           var change = false;
           var updatedComment = "";
           var i = 0;
@@ -48,6 +49,7 @@ async function checkTasks() {
             if(i < lines.length - 1) updatedComment += '\r\n';
           if(change)
           {
+            console.log("update", updatedComment);
             await octokit.request(`PATCH /repos/${owner}/${thisRepo}/issues/comments/${comment.id}`, {
               owner,
               repo,
