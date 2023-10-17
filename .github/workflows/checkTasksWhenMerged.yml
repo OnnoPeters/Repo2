@@ -1,0 +1,36 @@
+name: Check Task Completion
+
+on:
+  workflow_dispatch:
+    inputs:
+      prNumber:
+        description: "Pull Request ID"
+        required: true
+      repoName:
+        description: "Name of Target Repository"
+        required: true
+    
+jobs:
+  check_task:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      
+      - name: Run Check Task Script
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          PR_NUMBER: ${{ inputs.prNumber }}
+          OTHER_REPO_NAME: ${{ inputs.repoName }}
+          THIS_REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          npm install @octokit/core
+          node scripts/checkTasks.js
