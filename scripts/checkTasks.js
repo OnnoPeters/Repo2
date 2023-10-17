@@ -26,8 +26,10 @@ async function checkTasks() {
         }
       })
 
+      console.log(response.data);
       for(const comment of response.data)
       {
+          console.log(`${owner}/{otherRepo}#{prNumber}`);
           if(comment.body.includes(`${owner}/{otherRepo}#{prNumber}`)) {
             await octokit.request(`PATCH /repos/${owner}/${thisRepo}/issues/comments/${comment.id}`, {
             owner,
